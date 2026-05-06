@@ -1,0 +1,93 @@
+site_name: Ecoli
+repo_url: https://github.com/Noregrets42619/Noregrets42619.github.io
+site_description: hello
+copyright: Copyright &copy; 2026 | powered by Noregrets42619/Ecoli | All rights reserved.
+
+theme:
+  name: 'material'
+  language: 'zh'
+  favicon: img/favicon.png
+  logo: img/favicon.png
+  font:
+    text: Roboto
+    code: JetBrains Mono
+  palette: 
+  - media: "(prefers-color-scheme: light)" # 浅色
+    scheme: default
+    primary: white
+    accent: orange
+    toggle:
+      icon: material/lightbulb-variant
+      name: Switch to dark mode
+  - media: "(prefers-color-scheme: dark)" # 深色
+    scheme: slate
+    primary: blue grey
+    accent: amber
+    toggle:
+      icon: material/lightbulb-variant-outline
+      name: Switch to light mode
+  features:
+    - content.code.copy
+    - content.code.annotate
+    - navigation.tracking # 导航栏URL跟踪
+    - navigation.indexes # 提供概述页面
+    - toc.follow # 目录跟随
+    - navigation.top # 快速回到顶部
+    - search.suggest # 搜索建议
+    - navigation.instant.prefetch # 预加载
+    - navigation.instant.progress # 进度条
+    
+    
+    
+markdown_extensions:
+  # 基础扩展
+  - toc:
+      permalink: true
+      toc_depth: 4
+      title: On this page
+  - abbr
+  - tables
+  - def_list
+  - attr_list
+  - md_in_html
+  - sane_lists
+  - admonition
+  - footnotes
+
+  # PyMdown Extensions (增强扩展)
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.tilde
+  - pymdownx.mark
+  - pymdownx.keys
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.smartsymbols
+  - pymdownx.magiclink
+  - pymdownx.snippets
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.tabbed:
+      alternate_style: true 
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+
+
+
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
