@@ -1,0 +1,1108 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="ESP32_Host_MIDI piano firmware porting notes for WT99P4C5-S1.">
+      
+      
+      
+        <link rel="canonical" href="https://noregrets42619.github.io/test/">
+      
+      
+        <link rel="prev" href="../configuration/">
+      
+      
+        <link rel="next" href="../test1/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>移植日志 - Ecoli</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#wt99p4c5-midi-piano" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="Ecoli" class="md-header__button md-logo" aria-label="Ecoli" data-md-component="logo">
+      
+  <img src="../img/favicon.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Ecoli
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              移植日志
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="orange"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 20h6v1c0 .55-.45 1-1 1h-4c-.55 0-1-.45-1-1zM19 9c0 2.38-1.19 4.47-3 5.74V17c0 .55-.45 1-1 1H9c-.55 0-1-.45-1-1v-2.26C6.19 13.47 5 11.38 5 9c0-3.87 3.13-7 7-7s7 3.13 7 7m-4.29-.71c-.39-.39-1.03-.39-1.42 0L12 9.59l-1.29-1.3c-.39-.39-1.03-.39-1.42 0s-.39 1.03 0 1.42l1.71 1.7V16h2v-4.59l1.71-1.7c.39-.39.39-1.03 0-1.42"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7m2 11.58V16h-1v-4.59l1.71-1.7c.39-.39.39-1.03 0-1.42s-1.03-.39-1.42 0L12 9.59l-1.29-1.3c-.39-.39-1.03-.39-1.42 0s-.39 1.03 0 1.42l1.71 1.7V16h-1v-2.42C8.23 12.81 7 11.05 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.05-1.23 3.81-3 4.58M9 20h6v1c0 .55-.45 1-1 1h-4c-.55 0-1-.45-1-1z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Noregrets42619/project" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Ecoli" class="md-nav__button md-logo" aria-label="Ecoli" data-md-component="logo">
+      
+  <img src="../img/favicon.png" alt="logo">
+
+    </a>
+    Ecoli
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Noregrets42619/project" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    首页
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../replication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    复刻步骤
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    配置与依赖
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    移植日志
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    移植日志
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        项目背景
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 重新定位工程
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-esp32_host_midi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 接入 ESP32_Host_MIDI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 清理旧依赖
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-usb-midi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 建立最小 USB MIDI 验证入口
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-usb-midi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 处理 USB MIDI 重复事件
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-piano" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 移植 piano 显示层
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-es8311" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 接入 ES8311 音频
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-wifi-hosted-applemidi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 接入 WiFi Hosted 和 AppleMIDI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-dma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 分析 DMA 与运行日志
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-hosted-ble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. 配置 Hosted BLE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-ble-midi-peripheral" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. 接入 BLE MIDI peripheral
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-wifi-ble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. 做成 WiFi / BLE 可切换
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        总结
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    调试记录
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    功能状态
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Ecoli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ecoli 站点
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../git/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Git 常用操作
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        项目背景
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 重新定位工程
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-esp32_host_midi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 接入 ESP32_Host_MIDI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 清理旧依赖
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-usb-midi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 建立最小 USB MIDI 验证入口
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-usb-midi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 处理 USB MIDI 重复事件
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-piano" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 移植 piano 显示层
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-es8311" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 接入 ES8311 音频
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-wifi-hosted-applemidi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. 接入 WiFi Hosted 和 AppleMIDI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-dma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. 分析 DMA 与运行日志
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-hosted-ble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. 配置 Hosted BLE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-ble-midi-peripheral" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. 接入 BLE MIDI peripheral
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-wifi-ble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. 做成 WiFi / BLE 可切换
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        总结
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="wt99p4c5-midi-piano">WT99P4C5 MIDI Piano 移植日志<a class="headerlink" href="#wt99p4c5-midi-piano" title="Permanent link">&para;</a></h1>
+<p>这篇日志记录了我在 WT99P4C5-S1，也就是 ESP32-P4 + ESP32-C5 板子上，把 <code>ESP32_Host_MIDI</code> 的 piano 固件迁移成一个可用 MIDI Piano 工程的过程。</p>
+<p>目标是尽量复用上游 Arduino 工程，减少重写量，让工程在 ESP-IDF + Arduino component 混合编译环境下稳定运行，并支持 USB MIDI、屏幕显示、音频输出、WiFi AppleMIDI 和 BLE MIDI。</p>
+<h2 id="_1">项目背景<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>原始工程是一个面向 WT99P4C5-S1 的 ESP-IDF 综合示例，带有 Brookesia/LVGL、摄像头、音频、显示等能力。它适合作为板级能力参考，但不适合作为 MIDI Piano 主应用直接继续堆功能。</p>
+<p>重新定义后的目标如下：</p>
+<ul>
+<li>主控是 ESP32-P4。</li>
+<li>WiFi 和蓝牙能力由从机 ESP32-C5 通过 ESP-Hosted 提供。</li>
+<li>C5 已经烧录并配置好 hosted slave 固件。</li>
+<li>P4 侧使用 ESP-IDF，并引入 Arduino component 混合编译。</li>
+<li>MIDI 核心逻辑尽量复用 <code>ESP32_Host_MIDI</code> 的上游 Arduino 代码。</li>
+<li>屏幕从上游示例迁移到 SPI 协议。</li>
+<li>USB 作为 Host 接入 MIDI 键盘。</li>
+<li>WiFi 支持 AppleMIDI / RTP-MIDI。</li>
+<li>BLE 作为 BLE MIDI peripheral 被手机或软件发现连接。</li>
+<li>板载音频使用 ES8311，外接 NS4150B 功放。</li>
+</ul>
+<h2 id="1">1. 重新定位工程<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<p>第一步是确认工程本质：它是 ESP-IDF/CMake 工程，不是普通 Arduino 工程。旧工程里的 Brookesia、LVGL、摄像头示例都不是 MIDI piano 主线。</p>
+<p>我把工程收敛成：</p>
+<ul>
+<li>ESP-IDF 作为主构建系统。</li>
+<li>Arduino 作为 IDF component 使用。</li>
+<li><code>ESP32_Host_MIDI</code> 作为上游库接入。</li>
+<li>只保留 MIDI piano 所需依赖。</li>
+<li>不继续沿用旧 Brookesia 手机 UI 作为主应用。</li>
+</ul>
+<h2 id="2-esp32_host_midi">2. 接入 ESP32_Host_MIDI<a class="headerlink" href="#2-esp32_host_midi" title="Permanent link">&para;</a></h2>
+<p>上游库复制到 <code>components/ESP32_Host_MIDI</code> 后，需要补 IDF 组件构建入口。第一版只纳入最小可验证能力：</p>
+<ul>
+<li>MIDI 核心 handler。</li>
+<li>USB Host MIDI。</li>
+<li>UART MIDI。</li>
+</ul>
+<p>先不要把 BLE、RTP-MIDI、OSC、ESP-NOW 全部一次性编进来。这样可以先确认 <code>MIDIHandler + USBConnection + Arduino as IDF component</code> 这条主线稳定。</p>
+<p>关键点是 USB 依赖必须作为公共依赖传递，因为 <code>USBConnection.h</code> 会公开包含 <code>usb/usb_host.h</code>。如果 <code>usb</code> 只放在私有依赖里，<code>main</code> 间接 include 时会找不到头文件。</p>
+<h2 id="3">3. 清理旧依赖<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<p>旧工程的 Brookesia/LVGL 依赖会干扰 MIDI 固件构建。我做了这些处理：</p>
+<ul>
+<li>移除不再需要的 Brookesia 依赖。</li>
+<li>暂停下载 <code>lvgl/lvgl</code> 和 <code>esp_lvgl_port</code>。</li>
+<li>保留后续真正需要的板级能力，例如 SPI、GPIO、USB、音频、WiFi remote。</li>
+<li>BSP 侧用无图形库模式先跑通主线。</li>
+</ul>
+<p>这一步之后，工程从综合 demo 变成更清晰的 MIDI 固件工程。</p>
+<h2 id="4-usb-midi">4. 建立最小 USB MIDI 验证入口<a class="headerlink" href="#4-usb-midi" title="Permanent link">&para;</a></h2>
+<p>主程序先只做最小验证：</p>
+<ul>
+<li>初始化 NVS。</li>
+<li>初始化 Arduino runtime。</li>
+<li>初始化 USB MIDI Host。</li>
+<li>注册 MIDI 数据回调。</li>
+<li>调用 MIDI handler 解析收到的数据。</li>
+<li>在串口日志里打印 NoteOn / NoteOff。</li>
+</ul>
+<p>验证通过后，P4 的 USB Host 可以识别并读取 class-compliant USB MIDI 设备。</p>
+<h2 id="5-usb-midi">5. 处理 USB MIDI 重复事件<a class="headerlink" href="#5-usb-midi" title="Permanent link">&para;</a></h2>
+<p>最开始同一个音符事件会打印两次。处理思路是让 USB transport 只负责收包，由主应用统一把原始数据交给 MIDI handler，避免同一份数据被 transport 队列和手动回调重复消费。</p>
+<p>如果仍然重复，可以加一个很窄的 USB-MIDI packet 去重保护：</p>
+<ul>
+<li>只在极短时间窗口内去掉完全相同的 4 字节 USB-MIDI packet。</li>
+<li>比较时忽略 cable number，用来兼容设备通过多个 virtual cable 发同一份数据的情况。</li>
+<li>不影响正常快速连按，因为窗口非常短。</li>
+</ul>
+<h2 id="6-piano">6. 移植 piano 显示层<a class="headerlink" href="#6-piano" title="Permanent link">&para;</a></h2>
+<p>屏幕部分按上游 piano display 的思路做最小迁移：</p>
+<ul>
+<li><code>PianoState</code> 维护 128 个 MIDI note 的状态。</li>
+<li><code>PianoDisplay</code> 负责绘制 ST7789 SPI 屏。</li>
+<li>屏幕方向使用横屏 320x170。</li>
+<li>默认绘制 25 键 piano view。</li>
+<li>背光单独用 GPIO 控制。</li>
+<li>所有屏幕引脚、偏移、旋转、颜色顺序集中到 <code>piano_config.h</code>。</li>
+</ul>
+<p>默认引脚曾按可用 IO 先定为：</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">SCLK</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">MOSI</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">CS</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">DC</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">RST</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">BLK</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">38</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">MISO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span>
+</span></code></pre></div>
+<p>调试时遇到过 <code>fillScreen()</code> panic、panel 指针为空、屏幕亮但花屏、一圈花屏、一圈白屏等问题。最终通过延迟创建 LovyanGFX 对象、检查初始化结果、修正 4-wire SPI、调整 offset/rotation/RGB 顺序解决。</p>
+<h2 id="7-es8311">7. 接入 ES8311 音频<a class="headerlink" href="#7-es8311" title="Permanent link">&para;</a></h2>
+<p>音频部分参考板级支持代码里的 I2S 和 ES8311 初始化逻辑，同时参考上游 piano 示例里的 synth engine 思路。</p>
+<p>完成内容：</p>
+<ul>
+<li>初始化 ES8311 codec。</li>
+<li>建立 I2S 输出。</li>
+<li>把 MIDI NoteOn / NoteOff 映射成合成器发声和停音。</li>
+<li>让显示、MIDI 解析、音频响应共用同一套 note 状态。</li>
+<li>增加主音量、单音增益、低频增益、高频增益等参数。</li>
+<li>确认 NS4150B 功放使能脚是 GPIO53。</li>
+</ul>
+<p>调试中一度出现声音很小或无声。最终确认功放使能脚后，音频链路恢复。</p>
+<h2 id="8-wifi-hosted-applemidi">8. 接入 WiFi Hosted 和 AppleMIDI<a class="headerlink" href="#8-wifi-hosted-applemidi" title="Permanent link">&para;</a></h2>
+<p>P4 的 WiFi 由 C5 hosted slave 提供，因此 P4 侧不重写 WiFi 底层，而是让 Arduino <code>WiFi.h</code> 走 ESP-Hosted 适配路径。</p>
+<p>完成内容：</p>
+<ul>
+<li>使用 Arduino WiFi 接口连接热点。</li>
+<li>接入 AppleMIDI / RTP-MIDI。</li>
+<li>加入 mDNS 服务发现。</li>
+<li>让手机或 MIDI 软件能发现当前设备。</li>
+<li>把 USB MIDI 输入转发到 RTP-MIDI。</li>
+<li>让 RTP-MIDI 传入的数据进入显示和音频逻辑。</li>
+</ul>
+<p>一个关键问题是：一开始设备可以被 MIDI 软件发现，但弹琴没有声音。原因是 USB MIDI 收到的数据只进入本地显示和合成器，没有真正桥接到 RTP-MIDI 输出。补上 USB -&gt; RTP-MIDI 转发后，手机可以收到 MIDI 消息并演奏。</p>
+<h2 id="9-dma">9. 分析 DMA 与运行日志<a class="headerlink" href="#9-dma" title="Permanent link">&para;</a></h2>
+<p>WiFi MIDI 跑通后，日志里重点看这些内容：</p>
+<ul>
+<li>hosted WiFi 是否 ready。</li>
+<li>RTP-MIDI 是否 ready。</li>
+<li>是否出现 mempool 或 DMA 严重失败。</li>
+<li>I2S 是否只是 <code>dma frame num is adjusted</code> 这类对齐提示。</li>
+<li>RTP-MIDI peer 数量是否从 0 变成 1。</li>
+</ul>
+<p>结论是：WiFi 单独运行时 DMA 内存够用。BLE MIDI 数据量很小，真正压力主要来自 BT host 栈内存、WiFi hosted 队列和音频 DMA，所以 WiFi 与 BLE 最好做成可切换，而不是强制永远并发。</p>
+<h2 id="10-hosted-ble">10. 配置 Hosted BLE<a class="headerlink" href="#10-hosted-ble" title="Permanent link">&para;</a></h2>
+<p>P4 本身没有蓝牙控制器，所以不能按普通 ESP32 本地 BLE 配置。最终路线是：</p>
+<ul>
+<li>P4 侧开启 Bluetooth Host。</li>
+<li>P4 侧关闭本地 Bluetooth Controller。</li>
+<li>P4 侧使用 NimBLE。</li>
+<li>P4 侧启用 Hosted NimBLE over VHCI。</li>
+<li>C5 侧作为 hosted slave 提供 Bluetooth controller。</li>
+</ul>
+<p>关键验证日志：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Host BT Support: Enabled
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>BT Transport Type: VHCI
+</span></code></pre></div>
+<p>看到这两行后，说明 P4 到 C5 的蓝牙 HCI 通道已经起来。</p>
+<h2 id="11-ble-midi-peripheral">11. 接入 BLE MIDI peripheral<a class="headerlink" href="#11-ble-midi-peripheral" title="Permanent link">&para;</a></h2>
+<p>Hosted BLE 配置成功后，把 BLE MIDI 接进现有 piano 应用：</p>
+<ul>
+<li>让 <code>BLEConnection.cpp</code> 在 BT/NimBLE 开启时参与构建。</li>
+<li>给 CMake 添加 <code>bt</code> 依赖，避免 BLE 头文件间接包含 NimBLE 头时找不到依赖。</li>
+<li>把 BLE 初始化结果改成可返回成功或失败。</li>
+<li>新增 <code>piano_ble</code> transport 封装层。</li>
+<li>在主应用里初始化 BLE MIDI。</li>
+<li>将 BLE MIDI transport 注册到统一 MIDI handler。</li>
+<li>把 USB MIDI 输入同时转发到 BLE MIDI。</li>
+<li>BLE 端发送来的 MIDI 也进入现有显示和音频链路。</li>
+<li>BLE 断开时清理活动音符，避免挂音。</li>
+</ul>
+<h2 id="12-wifi-ble">12. 做成 WiFi / BLE 可切换<a class="headerlink" href="#12-wifi-ble" title="Permanent link">&para;</a></h2>
+<p>最终配置设计：</p>
+<ul>
+<li><code>PIANO_APP_ENABLE_WIFI</code> 控制 WiFi / AppleMIDI。</li>
+<li><code>PIANO_APP_ENABLE_BLE</code> 控制 BLE MIDI。</li>
+<li>两者可以尝试同时开启。</li>
+<li>如果出现内存紧张、初始化失败或延迟抖动，优先改成单独 BLE 或单独 WiFi 模式。</li>
+</ul>
+<p>这样后续调试不需要重写代码，只需要改配置。</p>
+<h2 id="_2">总结<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>这个工程已经从原来的 WT99P4C5-S1 综合示例，迁移成一个完整的 MIDI Piano 固件。整体思路是最小化重写、最大化复用上游 Arduino MIDI 代码，同时用 IDF 组件方式把每个功能稳定接进 P4+C5 的实际硬件环境。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 | powered by Noregrets42619/Ecoli | All rights reserved.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy", "content.code.annotate", "navigation.tracking", "navigation.indexes", "toc.follow", "navigation.top", "search.suggest", "navigation.instant.prefetch", "navigation.instant.progress"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

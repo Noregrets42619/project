@@ -1,32 +1,60 @@
-## 🚀 首页介绍
+# Ecoli ESP32_Host_MIDI Piano 复刻笔记
+
 ![](https://cdn.jsdelivr.net/gh/Noregrets42619/blog_images/Ecoli-big.png){:height="20%" width="20%"}
-# 欢迎来到 Ecoli.MX RT1064 开发手册
 
-本站为本人在开发RT1064官方库的日志，专注于 **NXP MXRT1064** 芯片的实战开发，记录了从底层外设驱动到上层开发工具的使用心得。
+这里记录的是我把 `ESP32_Host_MIDI` 的 piano 固件复刻并迁移到 WT99P4C5-S1 开发板上的过程。板子由 ESP32-P4 做主控，ESP32-C5 作为 hosted slave 提供 WiFi 和蓝牙能力；主工程使用 ESP-IDF，并把 Arduino 作为 IDF component 引入。
 
-### 📌 为什么建立这个站点？
+现在的主题是：如何尽量复用上游 Arduino MIDI 工程，在 P4+C5 硬件上做出一个可用的 MIDI Piano 固件。
 
-在嵌入式开发中，我们常说“代码是最好的文档”，但当面对 RT1064 这样主频高达  的 Cortex-M7 怪兽时，凌乱的 API 往往会让人头大。
+## 当前目标
 
-* **标准化：** 借助 **MCUXpresso Config Tools** 实现图形化配置，让底层初始化不再是体力活。
-* **沉淀：** 记录 UART、I2C、SPI 等外设的函数封装逻辑，避免“重复造轮子”。
-* **跨界：** 分享 MkDocs 文档构建、Git 版本管理等效率工具，从“代码搬运工”向“全栈工程师”进发。
+- 复用 `ESP32_Host_MIDI` 的 MIDI 处理和 piano 思路。
+- 在 ESP-IDF + Arduino component 混合工程中完成构建。
+- 使用 USB 2.0 Host 接入 class-compliant USB MIDI 设备。
+- 使用 SPI 屏显示 piano UI 和按键状态。
+- 使用 ES8311 + I2S 输出合成音频。
+- 通过 C5 hosted WiFi 支持 AppleMIDI / RTP-MIDI。
+- 通过 C5 hosted Bluetooth 支持 BLE MIDI peripheral。
+- 保持 WiFi MIDI 和 BLE MIDI 可以独立开关，方便排查内存、DMA 和稳定性问题。
 
-### 🛠 内容版块
+## 推荐阅读顺序
 
-1. **外设深度解析**：不仅仅是 API 的搬运，更有初始化流程、中断处理及避坑指南。
-2. **配置工具链**：如何优雅地使用 MCUXpresso 系列工具，实现“一键生成”与“手动微调”的完美平衡。
-3. **开发哲学**：记录 Git 流管理、Markdown 高级技巧，以及我是如何折腾出这个 MkDocs 站点的。
+1. [复刻步骤](replication.md)：从原始工程到可用 MIDI Piano 固件的主流程。
+2. [配置与依赖](configuration.md)：组件目录、clone 命令、`menuconfig` 关键项。
+3. [移植日志](test.md)：按时间线整理的完整迁移记录。
+4. [调试记录](test1.md)：USB、屏幕、音频、WiFi、BLE 关键问题和处理方式。
+5. [Git 常用操作](git.md)：项目仓库和静态网页仓库的提交、构建、发布流程。
 
-> “<u>纸上得来终觉浅，绝知此事要躬行。</u>” 希望这些文字能成为你（或未来的我）在 RT1064 开发路上的小小路标。
+## 项目最终链路
 
----
+```text
+USB MIDI 键盘
+    -> USB Host MIDI
+    -> MIDI handler
+    -> piano 状态
+    -> SPI 屏显示
+    -> ES8311 音频合成
+    -> RTP-MIDI / BLE-MIDI 转发
+
+手机或电脑 AppleMIDI
+    -> C5 hosted WiFi
+    -> RTP-MIDI
+    -> MIDI handler
+    -> 屏幕显示和音频输出
+
+手机或电脑 BLE MIDI
+    -> C5 Bluetooth controller
+    -> ESP-Hosted VHCI
+    -> P4 NimBLE host
+    -> BLE MIDI transport
+    -> MIDI handler
+```
 
 ## Thanks
 
 Website built by Ecoli using MkDocs. For full documentation, please visit [mkdocs.org](https://www.mkdocs.org).
 
-Thanks for the reference of [dixi's BLOG](https://dixilog.github.io/)
+Thanks for the reference of [dixi's BLOG](https://dixilog.github.io/).
 
 ![](https://cdn.jsdelivr.net/gh/Noregrets42619/blog_images/Picture%20(9).jpg){:height="20%" width="20%"}
 ![](https://cdn.jsdelivr.net/gh/Noregrets42619/blog_images/Picture%20(4).jpg){:height="20%" width="20%"}
