@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="ESP32_Host_MIDI piano firmware porting notes for WT99P4C5-S1.">
+        <meta name="description" content="WT99P4C5-S1 ESP32_Host_MIDI piano porting log.">
       
       
       
@@ -14,7 +14,7 @@
       
       
       
-        <link rel="next" href="replication/">
+        <link rel="next" href="project-setup/">
       
       
         
@@ -323,7 +323,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        当前目标
+        项目最终状态
       
     </span>
   </a>
@@ -334,7 +334,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        推荐阅读顺序
+        站点内容
       
     </span>
   </a>
@@ -345,7 +345,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        项目最终链路
+        最终链路
       
     </span>
   </a>
@@ -378,14 +378,14 @@
   
   
     <li class="md-nav__item">
-      <a href="replication/" class="md-nav__link">
+      <a href="project-setup/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    复刻步骤
+    工程准备与接入
   
 
     
@@ -405,14 +405,14 @@
   
   
     <li class="md-nav__item">
-      <a href="configuration/" class="md-nav__link">
+      <a href="usb-display/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    配置与依赖
+    USB MIDI 与 SPI 显示
   
 
     
@@ -432,14 +432,14 @@
   
   
     <li class="md-nav__item">
-      <a href="test/" class="md-nav__link">
+      <a href="audio-network-ble/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    移植日志
+    音频、WiFi 与 BLE
   
 
     
@@ -459,14 +459,14 @@
   
   
     <li class="md-nav__item">
-      <a href="test1/" class="md-nav__link">
+      <a href="issues-and-fixes/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    调试记录
+    报错与处理
   
 
     
@@ -486,14 +486,14 @@
   
   
     <li class="md-nav__item">
-      <a href="report/" class="md-nav__link">
+      <a href="project-status/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    功能状态
+    项目状态
   
 
     
@@ -513,7 +513,7 @@
   
   
     <li class="md-nav__item">
-      <a href="Ecoli/" class="md-nav__link">
+      <a href="site-structure/" class="md-nav__link">
         
   
   
@@ -540,7 +540,7 @@
   
   
     <li class="md-nav__item">
-      <a href="git/" class="md-nav__link">
+      <a href="git-commands/" class="md-nav__link">
         
   
   
@@ -592,7 +592,7 @@
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        当前目标
+        项目最终状态
       
     </span>
   </a>
@@ -603,7 +603,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        推荐阅读顺序
+        站点内容
       
     </span>
   </a>
@@ -614,7 +614,7 @@
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        项目最终链路
+        最终链路
       
     </span>
   </a>
@@ -652,30 +652,31 @@
   
 
 
-<h1 id="ecoli-esp32_host_midi-piano">Ecoli ESP32_Host_MIDI Piano 复刻笔记<a class="headerlink" href="#ecoli-esp32_host_midi-piano" title="Permanent link">&para;</a></h1>
+<h1 id="ecoli-esp32_host_midi-piano">Ecoli ESP32_Host_MIDI Piano 移植日志<a class="headerlink" href="#ecoli-esp32_host_midi-piano" title="Permanent link">&para;</a></h1>
 <p><img alt="" height="20%" src="https://cdn.jsdelivr.net/gh/Noregrets42619/blog_images/Ecoli-big.png" width="20%" /></p>
-<p>这里记录的是我把 <code>ESP32_Host_MIDI</code> 的 piano 固件复刻并迁移到 WT99P4C5-S1 开发板上的过程。板子由 ESP32-P4 做主控，ESP32-C5 作为 hosted slave 提供 WiFi 和蓝牙能力；主工程使用 ESP-IDF，并把 Arduino 作为 IDF component 引入。</p>
-<p>现在的主题是：如何尽量复用上游 Arduino MIDI 工程，在 P4+C5 硬件上做出一个可用的 MIDI Piano 固件。</p>
-<h2 id="_1">当前目标<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>本站记录 <code>ESP32_Host_MIDI</code> piano 固件移植到 WT99P4C5-S1 开发板的过程。原始工程是 Arduino 库工程，piano 示例主要面向 T-Display S3 等 Arduino 环境；本项目在 ESP32-P4 + ESP32-C5 的硬件环境中复刻其 piano 思路，并整理成适合当前开发板的 ESP-IDF 工程。</p>
+<p>开发板由 ESP32-P4 作为主控，ESP32-C5 通过 ESP-Hosted 提供 WiFi 和蓝牙能力。P4 侧使用 ESP-IDF，并引入 Arduino component，使上游 Arduino 工程中的 MIDI 逻辑尽量保持原结构。移植过程围绕 USB MIDI、SPI 屏、ES8311 音频、AppleMIDI 和 BLE MIDI 展开。</p>
+<h2 id="_1">项目最终状态<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <ul>
-<li>复用 <code>ESP32_Host_MIDI</code> 的 MIDI 处理和 piano 思路。</li>
-<li>在 ESP-IDF + Arduino component 混合工程中完成构建。</li>
-<li>使用 USB 2.0 Host 接入 class-compliant USB MIDI 设备。</li>
-<li>使用 SPI 屏显示 piano UI 和按键状态。</li>
-<li>使用 ES8311 + I2S 输出合成音频。</li>
-<li>通过 C5 hosted WiFi 支持 AppleMIDI / RTP-MIDI。</li>
-<li>通过 C5 hosted Bluetooth 支持 BLE MIDI peripheral。</li>
-<li>保持 WiFi MIDI 和 BLE MIDI 可以独立开关，方便排查内存、DMA 和稳定性问题。</li>
+<li>USB Host 能接入 MIDI 键盘，并收到稳定的 NoteOn / NoteOff。</li>
+<li>SPI 屏能显示 piano UI，按下 MIDI 键时能看到对应键位变化。</li>
+<li>ES8311 音频链路能发声，频率正确。</li>
+<li>C5 hosted WiFi 能连接热点。</li>
+<li>P4 能作为 AppleMIDI / RTP-MIDI 设备被手机或电脑发现。</li>
+<li>USB MIDI 能转发到 RTP-MIDI，手机端能收到消息并演奏。</li>
+<li>C5 hosted BLE 通道能启动，BLE MIDI peripheral 已接入工程。</li>
+<li>WiFi MIDI 和 BLE MIDI 均做成独立开关，便于按资源情况切换。</li>
 </ul>
-<h2 id="_2">推荐阅读顺序<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h2 id="_2">站点内容<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <ol>
-<li><a href="replication/">复刻步骤</a>：从原始工程到可用 MIDI Piano 固件的主流程。</li>
-<li><a href="configuration/">配置与依赖</a>：组件目录、clone 命令、<code>menuconfig</code> 关键项。</li>
-<li><a href="test/">移植日志</a>：按时间线整理的完整迁移记录。</li>
-<li><a href="test1/">调试记录</a>：USB、屏幕、音频、WiFi、BLE 关键问题和处理方式。</li>
-<li><a href="git/">Git 常用操作</a>：项目仓库和静态网页仓库的提交、构建、发布流程。</li>
+<li><a href="project-setup/">工程准备与接入</a>：原始工程审查、P4C5 工程整理、C5 hosted slave 烧录和 Host-MIDI 接入记录。</li>
+<li><a href="usb-display/">USB MIDI 与 SPI 显示</a>：从 USB MIDI 验证推进到 ST7789 SPI 屏显示的记录。</li>
+<li><a href="audio-network-ble/">音频、WiFi 与 BLE</a>：ES8311、AppleMIDI 和 BLE MIDI 的接入记录。</li>
+<li><a href="issues-and-fixes/">报错与处理</a>：编译、烧录和调试中遇到的关键报错与处理结果。</li>
+<li><a href="project-status/">项目状态</a>：最终确认过的功能状态。</li>
+<li><a href="git-commands/">Git 常用操作</a>：MkDocs 站点和静态网页仓库的提交记录方式。</li>
 </ol>
-<h2 id="_3">项目最终链路<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h2 id="_3">最终链路<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>USB MIDI 键盘
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    -&gt; USB Host MIDI
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    -&gt; MIDI handler

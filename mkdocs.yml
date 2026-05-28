@@ -1,18 +1,20 @@
 site_name: Ecoli
 site_url: https://noregrets42619.github.io/
 repo_url: https://github.com/Noregrets42619/project
-site_description: ESP32_Host_MIDI piano firmware porting notes for WT99P4C5-S1.
+site_description: WT99P4C5-S1 ESP32_Host_MIDI piano porting log.
+exclude_docs: |
+  new.md
 copyright: Copyright &copy; 2026 | powered by Noregrets42619/Ecoli | All rights reserved.
 
 nav:
   - 首页: index.md
-  - 复刻步骤: replication.md
-  - 配置与依赖: configuration.md
-  - 移植日志: test.md
-  - 调试记录: test1.md
-  - 功能状态: report.md
-  - Ecoli 站点: Ecoli.md
-  - Git 常用操作: git.md
+  - 工程准备与接入: project-setup.md
+  - USB MIDI 与 SPI 显示: usb-display.md
+  - 音频、WiFi 与 BLE: audio-network-ble.md
+  - 报错与处理: issues-and-fixes.md
+  - 项目状态: project-status.md
+  - Ecoli 站点: site-structure.md
+  - Git 常用操作: git-commands.md
 
 theme:
   name: 'material'
@@ -44,7 +46,7 @@ theme:
     - navigation.indexes # 提供概述页面
     - toc.follow # 目录跟随
     - navigation.top # 快速回到顶部
-    - search.suggest # 搜索建议
+    - search.suggest # 搜索联想
     - navigation.instant.prefetch # 预加载
     - navigation.instant.progress # 进度条
     

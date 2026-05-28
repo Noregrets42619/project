@@ -6,15 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="ESP32_Host_MIDI piano firmware porting notes for WT99P4C5-S1.">
+        <meta name="description" content="WT99P4C5-S1 ESP32_Host_MIDI piano porting log.">
       
       
       
-        <link rel="canonical" href="https://noregrets42619.github.io/git/">
+        <link rel="canonical" href="https://noregrets42619.github.io/site-structure/">
       
       
-        <link rel="prev" href="../Ecoli/">
+        <link rel="prev" href="../project-status/">
       
+      
+        <link rel="next" href="../git-commands/">
       
       
         
@@ -25,7 +27,7 @@
     
     
       
-        <title>Git 常用操作 - Ecoli</title>
+        <title>Ecoli 站点 - Ecoli</title>
       
     
     
@@ -76,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#git" class="md-skip">
+        <a href="#ecoli" class="md-skip">
           跳转至
         </a>
       
@@ -111,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Git 常用操作
+              Ecoli 站点
             
           </span>
         </div>
@@ -285,14 +287,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../replication/" class="md-nav__link">
+      <a href="../project-setup/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    复刻步骤
+    工程准备与接入
   
 
     
@@ -312,14 +314,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../configuration/" class="md-nav__link">
+      <a href="../usb-display/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    配置与依赖
+    USB MIDI 与 SPI 显示
   
 
     
@@ -339,14 +341,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../test/" class="md-nav__link">
+      <a href="../audio-network-ble/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    移植日志
+    音频、WiFi 与 BLE
   
 
     
@@ -366,14 +368,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../test1/" class="md-nav__link">
+      <a href="../issues-and-fixes/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    调试记录
+    报错与处理
   
 
     
@@ -393,41 +395,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../report/" class="md-nav__link">
+      <a href="../project-status/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    功能状态
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../Ecoli/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Ecoli 站点
+    项目状态
   
 
     
@@ -463,7 +438,7 @@
   <span class="md-ellipsis">
     
   
-    Git 常用操作
+    Ecoli 站点
   
 
     
@@ -481,7 +456,7 @@
   <span class="md-ellipsis">
     
   
-    Git 常用操作
+    Ecoli 站点
   
 
     
@@ -509,10 +484,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#mkdocs-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MkDocs Commands
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        原始常用命令
+        当前文档树
       
     </span>
   </a>
@@ -523,62 +509,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        当前仓库地址
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        提交文档源码
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        构建静态网页
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        提交静态网页
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        常见检查
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        提交建议
+        内容边界
       
     </span>
   </a>
@@ -589,6 +520,33 @@
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../git-commands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Git 常用操作
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -622,10 +580,21 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#mkdocs-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MkDocs Commands
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        原始常用命令
+        当前文档树
       
     </span>
   </a>
@@ -636,62 +605,7 @@
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        当前仓库地址
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        提交文档源码
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        构建静态网页
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        提交静态网页
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        常见检查
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        提交建议
+        内容边界
       
     </span>
   </a>
@@ -718,82 +632,37 @@
   
 
 
-<h1 id="git">Git 常用操作<a class="headerlink" href="#git" title="Permanent link">&para;</a></h1>
-<p>这一页保留原来的 Git 常用命令，并扩写当前项目的源码仓库和静态网页仓库提交流程。</p>
-<h2 id="_1">原始常用命令<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h1 id="ecoli">Ecoli 站点记录<a class="headerlink" href="#ecoli" title="Permanent link">&para;</a></h1>
+<p>这一页记录 MkDocs 站点当前结构。站点名字、图标和 Ecoli 这个自定义入口继续保留。</p>
+<h2 id="mkdocs-commands">MkDocs Commands<a class="headerlink" href="#mkdocs-commands" title="Permanent link">&para;</a></h2>
 <ul>
-<li><code>git init</code>  - 初始化git.</li>
-<li><code>git add .</code> - 将所有文件提交至缓冲区.</li>
-<li><code>git commit -m "example"</code> -  编写提交备注.</li>
-<li><code>git push origin main</code> - 将文件提交至仓库main分支.</li>
+<li><code>mkdocs new [Ecoli]</code> - 新建一个名字为Ecoli的页面</li>
+<li><code>mkdocs serve</code> - 开启自带服务器实时预览【<strong>此版本存在bug，需将click降至8.2.1版本</strong>】.
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>(pip install click==8.2.1)
+</span></code></pre></div></li>
+<li><code>mkdocs build</code> - 构建网页端.</li>
+<li><code>mkdocs -h</code> - 打印帮助文档.</li>
 </ul>
-<h2 id="_2">当前仓库地址<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>源码项目仓库：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git@github.com:Noregrets42619/project.git
+<h2 id="_1">当前文档树<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>.
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>├── mkdocs.yml                    # Material for MkDocs 配置
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>├── docs/
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│   ├── index.md                  # 首页
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│   ├── project-setup.md          # 工程准备与接入记录
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>│   ├── usb-display.md            # USB MIDI 与 SPI 显示移植记录
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>│   ├── audio-network-ble.md      # 音频、WiFi 与 BLE 移植记录
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>│   ├── issues-and-fixes.md       # 报错与处理记录
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>│   ├── project-status.md         # 项目状态
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>│   ├── site-structure.md         # Ecoli 站点记录
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>│   ├── git-commands.md           # Git 常用操作
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>│   ├── img/
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>│   │   └── favicon.png           # Ecoli 图标
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>│   └── javascripts/
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>│       └── mathjax.js            # MathJax 配置
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>└── site/                         # mkdocs build 生成的静态网页
 </span></code></pre></div>
-<p>静态网页仓库：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>git@github.com:Noregrets42619/Noregrets42619.github.io.git
-</span></code></pre></div>
-<p>当前工作区根目录使用项目仓库作为 <code>origin</code>。如果需要确认：</p>
-<div class="language-powershell highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">git</span> <span class="n">remote</span> <span class="n">-v</span>
-</span></code></pre></div>
-<p>如果需要重新设置：</p>
-<div class="language-powershell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">git</span> <span class="n">remote</span> <span class="nb">set-url</span> <span class="n">origin</span> <span class="n">git</span><span class="nv">@github</span><span class="p">.</span><span class="n">com</span><span class="p">:</span><span class="n">Noregrets42619</span><span class="p">/</span><span class="n">project</span><span class="p">.</span><span class="n">git</span>
-</span></code></pre></div>
-<h2 id="_3">提交文档源码<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<div class="language-powershell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">cd </span><span class="s2">&quot;D:\Material for MkDocs&quot;</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">git</span> <span class="n">status</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">git</span> <span class="n">add</span> <span class="n">mkdocs</span><span class="p">.</span><span class="n">yml</span> <span class="n">docs</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s2">&quot;Rewrite site for ESP32 Host MIDI piano&quot;</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">main</span>
-</span></code></pre></div>
-<h2 id="_4">构建静态网页<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
-<div class="language-powershell highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">cd </span><span class="s2">&quot;D:\Material for MkDocs&quot;</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">mkdocs</span> <span class="n">build</span>
-</span></code></pre></div>
-<p>构建完成后，静态网页会生成到：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>D:\Material for MkDocs\site
-</span></code></pre></div>
-<h2 id="_5">提交静态网页<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<p>如果 <code>site</code> 是独立 Git 仓库：</p>
-<div class="language-powershell highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">cd </span><span class="s2">&quot;D:\Material for MkDocs\site&quot;</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">git</span> <span class="n">remote</span> <span class="n">-v</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n">git</span> <span class="n">remote</span> <span class="nb">set-url</span> <span class="n">origin</span> <span class="n">git</span><span class="nv">@github</span><span class="p">.</span><span class="n">com</span><span class="p">:</span><span class="n">Noregrets42619</span><span class="p">/</span><span class="n">Noregrets42619</span><span class="p">.</span><span class="n">github</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">git</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="n">git</span> <span class="n">status</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="n">git</span> <span class="n">add</span> <span class="p">.</span>
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s2">&quot;Deploy ESP32 Host MIDI piano docs&quot;</span>
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">main</span>
-</span></code></pre></div>
-<p>如果 <code>site</code> 不是独立 Git 仓库，而是由根目录项目仓库跟踪，就在根目录一起提交：</p>
-<div class="language-powershell highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">cd </span><span class="s2">&quot;D:\Material for MkDocs&quot;</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">git</span> <span class="n">add</span> <span class="n">site</span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s2">&quot;Build static site&quot;</span>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">main</span>
-</span></code></pre></div>
-<h2 id="_6">常见检查<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
-<p>查看当前分支：</p>
-<div class="language-powershell highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">git</span> <span class="n">branch</span> <span class="p">-</span><span class="n">-show-current</span>
-</span></code></pre></div>
-<p>查看提交历史：</p>
-<div class="language-powershell highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">git</span> <span class="n">log</span> <span class="p">-</span><span class="n">-oneline</span> <span class="p">-</span><span class="n">5</span>
-</span></code></pre></div>
-<p>查看某个文件的修改：</p>
-<div class="language-powershell highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">git</span> <span class="nb">diff </span><span class="p">--</span> <span class="n">docs</span><span class="p">/</span><span class="n">index</span><span class="p">.</span><span class="nb">md</span>
-</span></code></pre></div>
-<p>撤销暂存但保留文件修改：</p>
-<div class="language-powershell highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">git</span> <span class="n">restore</span> <span class="p">-</span><span class="n">-staged</span> <span class="n">docs</span><span class="p">/</span><span class="n">index</span><span class="p">.</span><span class="nb">md</span>
-</span></code></pre></div>
-<h2 id="_7">提交建议<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
-<ul>
-<li>文档源码和构建产物最好分开提交。</li>
-<li>如果 <code>site</code> 是独立仓库，先提交源码仓库，再进入 <code>site</code> 提交网页仓库。</li>
-<li>每次 <code>mkdocs build</code> 后先本地打开或运行 <code>mkdocs serve</code> 检查导航。</li>
-<li>不要把个人密钥、WiFi 密码、真实设备日志中的敏感信息提交到公开仓库。</li>
-</ul>
+<h2 id="_2">内容边界<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>这个站点现在只记录 WT99P4C5-S1 MIDI Piano 移植过程。旧的练习内容和非主线记录没有放进正式导航。</p>
 
 
 
