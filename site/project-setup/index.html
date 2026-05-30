@@ -371,6 +371,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        物料选择
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#c5-hosted-slave" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -393,7 +404,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
         组件接入
@@ -415,7 +426,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
         早期编译问题
@@ -668,6 +679,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        物料选择
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#c5-hosted-slave" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -690,7 +712,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
         组件接入
@@ -712,7 +734,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       
         早期编译问题
@@ -772,6 +794,10 @@
 <h2 id="_3">复刻目标<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <p>基于 P4C5 开发板的外设条件，复刻目标最终确定为：以 ESP-IDF 作为主工程环境，将 USB、WiFi、BLE、屏幕显示和音频输出集成到同一个项目中，并复用 <code>ESP32_Host_MIDI</code> 的 piano 相关逻辑，实现功能集合与拓展。</p>
 <p>P4 侧负责主应用逻辑、USB MIDI、SPI 屏显示和 ES8311 音频。C5 侧通过 ESP-Hosted 提供 WiFi 和蓝牙能力。</p>
+<h2 id="_4">物料选择<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>基于项目本身，由于开发板自带功放和音频信号解码元件，只需购买不超过功放带载能力的小型喇叭模块即可。</p>
+<p>屏幕模块，项目本身使用<code>I80</code>协议的<code>320*190</code>尺寸屏幕，硬件虽然支持<code>MIPI</code>屏幕，但由于性能和屏幕素质要求极低，并且价格昂贵，遂选用4线SPI协议进行屏幕移植，将<code>I80</code>协议用SPI重写，并移植至idf环境。</p>
+<p>外设键盘，选用支持<code>MIDI</code>协议的打击键盘，可以输出打击力度，使音量能够根据按键力度而变化。</p>
 <h2 id="c5-hosted-slave">C5 hosted slave 烧录<a class="headerlink" href="#c5-hosted-slave" title="Permanent link">&para;</a></h2>
 <p>参考 ESP-IDF 官方示例 <code>esp32_p4_function_ev_board</code>，下载 <code>esp-hosted-mcu</code> 例程，并进入 <code>esp-hosted-mcu\slave</code> 目录进行编译。</p>
 <p>C5 侧通过 USB-TTL 烧录 <code>hosted slave</code> 固件。P4 侧 <code>sdkconfig</code> 也同步进行配置，后续主要工作集中在 P4 工程本身：USB MIDI、SPI 屏、ES8311 音频、WiFi AppleMIDI 和 BLE MIDI。</p>
@@ -785,7 +811,7 @@
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>├── sdkconfig
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>└── partitions.csv
 </span></code></pre></div>
-<h2 id="_4">组件接入<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<h2 id="_5">组件接入<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
 <p>Arduino component、Host-MIDI 和显示库都曾放入组件目录。实际使用过的命令如下：</p>
 <div class="language-powershell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd </span><span class="n">D</span><span class="p">:\</span><span class="n">ESP_PROJECT</span><span class="p">\</span><span class="n">WT99P4C5</span><span class="p">\</span><span class="n">components</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">git</span> <span class="n">clone</span> <span class="p">-</span><span class="n">-recursive</span> <span class="n">https</span><span class="p">://</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">espressif</span><span class="p">/</span><span class="n">arduino-esp32</span><span class="p">.</span><span class="n">git</span> <span class="n">arduino-esp32</span>
@@ -797,7 +823,7 @@
 <p><code>ESP32_Host_MIDI</code> 本身是 Arduino 风格，直接放入 IDF 后不能作为组件编译，因此补了 CMake 构建入口。</p>
 <p>第一阶段只让最小功能参与编译：MIDI handler、USB Host MIDI 和 UART MIDI。BLE、WiFi 没有在一开始全部加入程序。</p>
 <p><code>main</code> 随后被改成最小 USB MIDI 验证入口：初始化 NVS、初始化 Arduino runtime、注册 USB MIDI transport、启动 MIDI handler，并在日志中打印 NoteOn / NoteOff。</p>
-<h2 id="_5">早期编译问题<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<h2 id="_6">早期编译问题<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
 <p>第一次在 VSCode 中 Reconfigure 时，工程报了 <code>usb/usb_host.h</code> 找不到。问题来自 USB 组件依赖作用域写窄：<code>USBConnection.h</code> 公开包含 <code>usb/usb_host.h</code>，所以 <code>usb</code> 必须作为公共依赖传递。CMake 依赖改成公共依赖后，这个问题解决。</p>
 <p>接着又遇到 Brookesia 的 <code>Unknown memory malloc</code>。这个错误来自旧 UI 框架继续被工程拉进来编译，而当前主应用已经不再使用 Brookesia。旧依赖从 main manifest 中移除后，工程主线回到 MIDI。</p>
 <p>后来 Component Manager 还在下载 <code>lvgl/lvgl</code>，并且下载下来的 <code>component.zip</code> 不是合法 zip。判断最终项目不需要 LVGL 后，BSP 切成无 LVGL 图形库模式，并移除 <code>lvgl/lvgl</code> 和 <code>esp_lvgl_port</code> 等旧显示栈依赖。</p>
