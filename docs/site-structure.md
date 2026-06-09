@@ -19,6 +19,7 @@
 ├── mkdocs.yml                    # Material for MkDocs 配置
 ├── docs/
 │   ├── index.md                  # 首页
+│   ├── usage-guide.md            # 使用说明
 │   ├── project-setup.md          # 工程准备与接入记录
 │   ├── usb-display.md            # USB MIDI 与 SPI 显示移植记录
 │   ├── audio-network-ble.md      # 音频、WiFi 与 BLE 移植记录
@@ -27,7 +28,8 @@
 │   ├── site-structure.md         # Ecoli 站点记录
 │   ├── git-commands.md           # Git 常用操作
 │   ├── img/
-│   │   └── favicon.png           # Ecoli 图标
+│   │   ├── favicon.png           # Ecoli 图标
+│   │   └── usage/                # 使用说明截图
 │   └── javascripts/
 │       └── mathjax.js            # MathJax 配置
 └── site/                         # mkdocs build 生成的静态网页

@@ -8,6 +8,7 @@ copyright: Copyright &copy; 2026 | powered by Noregrets42619/Ecoli | All rights 
 
 nav:
   - 首页: index.md
+  - 使用说明: usage-guide.md
   - 工程准备与接入: project-setup.md
   - USB MIDI 与 SPI 显示: usb-display.md
   - 音频、WiFi 与 BLE: audio-network-ble.md
@@ -102,5 +103,4 @@ markdown_extensions:
 
 extra_javascript:
   - javascripts/mathjax.js
-  - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
