@@ -9,9 +9,9 @@
 * `git commit -m "example"` -  编写提交备注.
 * `git push origin main` - 将文件提交至仓库main分支.
 
-## 当前两个仓库
+## 文档与网页仓库
 
-源码项目仓库：
+文档源码仓库：
 
 ```text
 git@github.com:Noregrets42619/project.git
@@ -41,7 +41,7 @@ git remote set-url origin git@github.com:Noregrets42619/Noregrets42619.github.io
 cd "D:\Material for MkDocs"
 git status
 git add mkdocs.yml docs
-git commit -m "Rewrite site as MIDI piano porting log"
+git commit -m "Add WT32-ETH01 weather display porting log"
 git push origin main
 ```
 
@@ -64,8 +64,18 @@ D:\Material for MkDocs\site
 cd "D:\Material for MkDocs\site"
 git status
 git add .
-git commit -m "Deploy MIDI piano porting log"
+git commit -m "Publish weather display documentation"
 git push origin main
 ```
 
 之前线上页面出现过 Git 冲突标记，原因是 `site` 仓库里的旧 HTML 带着合并冲突文本被提交到了 GitHub Pages。后来确认本地 `mkdocs serve` 正常，问题出在静态网页仓库里提交了旧构建产物。这个站点后面都按 `mkdocs build` 生成 `site`，再提交 `site` 仓库。
+
+## 天气屏工程仓库
+
+天气屏的源码和 README 放在独立仓库：
+
+```text
+git@github.com:Noregrets42619/esp32-e-paper-weatherdisplay.git
+```
+
+文档源码仓库不再重复提交 `site` 目录中的生成网页。构建后，在 `site` 自己的仓库中提交和推送；天气屏工程另行提交。

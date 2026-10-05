@@ -1,40 +1,49 @@
 # Ecoli 站点记录
 
-这一页记录 MkDocs 站点当前结构。站点名字、图标和 Ecoli 这个自定义入口继续保留。
+站点继续使用 Material for MkDocs，保留 Ecoli 的名字、图标与原来的主题。文档按开发板和工程分组，P4C5 MIDI Piano 与 WT32-ETH01 天气屏分别放在导航中。
 
-## MkDocs Commands
+## MkDocs 命令
 
-* `mkdocs new [Ecoli]` - 新建一个名字为Ecoli的页面
-* `mkdocs serve` - 开启自带服务器实时预览【**此版本存在bug，需将click降至8.2.1版本**】.
-```test
-(pip install click==8.2.1)
+```powershell
+mkdocs serve
+mkdocs build
+mkdocs build --strict
 ```
-* `mkdocs build` - 构建网页端.
-* `mkdocs -h` - 打印帮助文档.
+
+`serve` 用于本地预览，`build` 生成静态网页，`--strict` 用来检查文档构建中的警告。此前 `serve` 遇到过 click 版本兼容问题，当时通过 `pip install click==8.2.1` 处理。
 
 ## 当前文档树
 
 ```text
 .
-├── mkdocs.yml                    # Material for MkDocs 配置
+├── mkdocs.yml
 ├── docs/
-│   ├── index.md                  # 首页
-│   ├── usage-guide.md            # 使用说明
-│   ├── project-setup.md          # 工程准备与接入记录
-│   ├── usb-display.md            # USB MIDI 与 SPI 显示移植记录
-│   ├── audio-network-ble.md      # 音频、WiFi 与 BLE 移植记录
-│   ├── issues-and-fixes.md       # 报错与处理记录
-│   ├── project-status.md         # 项目状态
-│   ├── site-structure.md         # Ecoli 站点记录
-│   ├── git-commands.md           # Git 常用操作
+│   ├── index.md                  # 两个项目的首页入口
+│   ├── piano/index.md            # 原 MIDI Piano 概览
+│   ├── usage-guide.md            # MIDI Piano 使用说明
+│   ├── project-setup.md          # P4C5 工程准备
+│   ├── usb-display.md            # USB MIDI 与 SPI 显示
+│   ├── audio-network-ble.md      # 音频、WiFi 与 BLE
+│   ├── issues-and-fixes.md       # MIDI Piano 报错处理
+│   ├── project-status.md         # MIDI Piano 状态
+│   ├── weather/
+│   │   ├── index.md              # 天气屏项目与硬件
+│   │   ├── porting-log.md        # 天气屏复刻日志
+│   │   ├── usage-api.md          # 使用与 Open-Meteo API
+│   │   └── issues-and-status.md  # 天气屏报错与状态
+│   ├── site-structure.md
+│   ├── git-commands.md
 │   ├── img/
-│   │   ├── favicon.png           # Ecoli 图标
-│   │   └── usage/                # 使用说明截图
-│   └── javascripts/
-│       └── mathjax.js            # MathJax 配置
-└── site/                         # mkdocs build 生成的静态网页
+│   │   ├── usage/                # MIDI 使用截图
+│   │   └── weather/              # 天气界面像素预览
+│   └── javascripts/mathjax.js
+└── site/                         # 静态网页，有独立 Git 仓库
 ```
 
-## 内容边界
+MIDI Piano 的旧页面地址继续保留。原首页内容放到 `piano/index.md`，首页增加两个项目入口。`new.md` 是旧的完整记录，仍不加入正式导航。
 
-这个站点现在只记录 WT99P4C5-S1 MIDI Piano 移植过程。旧的练习内容和非主线记录没有放进正式导航。
+## 文档与网页仓库
+
+文档源码放在 [project](https://github.com/Noregrets42619/project)，生成网页放在 [Noregrets42619.github.io](https://github.com/Noregrets42619/Noregrets42619.github.io)。`site` 目录不再由文档源码仓库重复跟踪，网页更新在它自己的仓库中提交。
+
+天气屏固件与 README 放在独立的 [esp32-e-paper-weatherdisplay](https://github.com/Noregrets42619/esp32-e-paper-weatherdisplay) 仓库。

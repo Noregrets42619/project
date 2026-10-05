@@ -1,55 +1,39 @@
-# Ecoli ESP32_Host_MIDI Piano 移植日志
+# Ecoli ESP32 项目复刻日志
 
 ![](https://cdn.jsdelivr.net/gh/Noregrets42619/blog_images/Ecoli-big.png){:height="20%" width="20%"}
 
-本站记录 `ESP32_Host_MIDI` piano 固件移植到 WT99P4C5-S1 开发板的过程。原始工程是 Arduino 库工程，piano 示例主要面向 T-Display S3 等 Arduino 环境；本项目在 ESP32-P4 + ESP32-C5 的硬件环境中复刻其 piano 思路，并整理成适合当前开发板的 ESP-IDF 工程。
+这里记录自己复刻和移植的 ESP32 项目，从选板、接线、编译到烧录后的问题处理。现在有两个工程：WT99P4C5-S1 MIDI Piano，以及 WT32-ETH01 四色墨水屏天气显示器。
 
-开发板由 ESP32-P4 作为主控，ESP32-C5 通过 ESP-Hosted 提供 WiFi 和蓝牙能力。P4 侧使用 ESP-IDF，并引入 Arduino component，使上游 Arduino 工程中的 MIDI 逻辑尽量保持原结构。移植过程围绕 USB MIDI、SPI 屏、ES8311 音频、AppleMIDI 和 BLE MIDI 展开。
+## WT99P4C5-S1 MIDI Piano
 
-## 项目最终状态
+把 `ESP32_Host_MIDI` 的 piano 思路移植到 ESP32-P4 + ESP32-C5。P4 负责 USB Host、屏幕和 ES8311 音频，C5 通过 ESP-Hosted 提供 Wi-Fi 与蓝牙。
 
-- USB Host 能接入 MIDI 键盘，并收到稳定的 NoteOn / NoteOff。
-- SPI 屏能显示 piano UI，按下 MIDI 键时能看到对应键位变化。
-- ES8311 音频链路能发声，频率正确。
-- C5 hosted WiFi 能连接热点。
-- P4 能作为 AppleMIDI / RTP-MIDI 设备被手机或电脑发现。
-- USB MIDI 能转发到 RTP-MIDI，手机端能收到消息并演奏。
-- C5 hosted BLE 通道能启动，BLE MIDI peripheral 已接入工程。
-- WiFi MIDI 和 BLE MIDI 均做成独立开关，便于按资源情况切换。
+USB MIDI 键盘、本地 piano 显示、音频输出，以及 AppleMIDI / BLE MIDI 的接入过程都整理在原来的日志中。
 
-## 站点内容
+- [项目概览](piano/index.md)
+- [工程准备与接入](project-setup.md)
+- [USB MIDI 与 SPI 显示](usb-display.md)
+- [音频、WiFi 与 BLE](audio-network-ble.md)
+- [使用说明](usage-guide.md)
+- [报错与处理](issues-and-fixes.md)
+- [项目状态](project-status.md)
 
-1. [工程准备与接入](project-setup.md)：原始工程审查、P4C5 工程整理、C5 hosted slave 烧录和 Host-MIDI 接入记录。
-2. [USB MIDI 与 SPI 显示](usb-display.md)：从 USB MIDI 验证推进到 ST7789 SPI 屏显示的记录。
-3. [音频、WiFi 与 BLE](audio-network-ble.md)：ES8311、AppleMIDI 和 BLE MIDI 的接入记录。
-4. [报错与处理](issues-and-fixes.md)：编译、烧录和调试中遇到的关键报错与处理结果。
-5. [项目状态](project-status.md)：最终确认过的功能状态。
-6. [Git 常用操作](git-commands.md)：MkDocs 站点和静态网页仓库的提交记录方式。
+## WT32-ETH01 四色墨水屏天气显示器
 
-## 最终链路
+复刻 `esp32-e-paper-weatherdisplay`，主控换成 WT32-ETH01，天气接口改为 Open-Meteo，屏幕采用 4.2inch e-Paper Module (G)。从普通黑白 V2 驱动超时，到确认 G 型协议、显示四色诊断图，再改成中文天气界面。
 
-```text
-USB MIDI 键盘
-    -> USB Host MIDI
-    -> MIDI handler
-    -> piano 状态
-    -> SPI 屏显示
-    -> ES8311 音频合成
-    -> RTP-MIDI / BLE-MIDI 转发
+Wi-Fi、NTP 与天气请求已经有实机日志，G 型四色诊断图已显示成功。中文天气界面已编译并生成像素预览，实机效果待烧录确认。
 
-手机或电脑 AppleMIDI
-    -> C5 hosted WiFi
-    -> RTP-MIDI
-    -> MIDI handler
-    -> 屏幕显示和音频输出
+- [项目与硬件](weather/index.md)
+- [复刻日志](weather/porting-log.md)
+- [使用与天气 API](weather/usage-api.md)
+- [报错与项目状态](weather/issues-and-status.md)
+- [天气屏工程仓库](https://github.com/Noregrets42619/esp32-e-paper-weatherdisplay)
 
-手机或电脑 BLE MIDI
-    -> C5 Bluetooth controller
-    -> ESP-Hosted VHCI
-    -> P4 NimBLE host
-    -> BLE MIDI transport
-    -> MIDI handler
-```
+## 站点记录
+
+- [Ecoli 站点](site-structure.md)
+- [Git 常用操作](git-commands.md)
 
 ## Thanks
 

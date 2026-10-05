@@ -1,19 +1,26 @@
 site_name: Ecoli
 site_url: https://noregrets42619.github.io/
 repo_url: https://github.com/Noregrets42619/project
-site_description: WT99P4C5-S1 ESP32_Host_MIDI piano porting log.
+site_description: ESP32 项目复刻记录：P4C5 MIDI Piano 与 WT32-ETH01 四色墨水屏天气显示器。
 exclude_docs: |
   new.md
 copyright: Copyright &copy; 2026 | powered by Noregrets42619/Ecoli | All rights reserved.
 
 nav:
   - 首页: index.md
-  - 使用说明: usage-guide.md
-  - 工程准备与接入: project-setup.md
-  - USB MIDI 与 SPI 显示: usb-display.md
-  - 音频、WiFi 与 BLE: audio-network-ble.md
-  - 报错与处理: issues-and-fixes.md
-  - 项目状态: project-status.md
+  - WT99P4C5-S1 MIDI Piano:
+      - 项目概览: piano/index.md
+      - 使用说明: usage-guide.md
+      - 工程准备与接入: project-setup.md
+      - USB MIDI 与 SPI 显示: usb-display.md
+      - 音频、WiFi 与 BLE: audio-network-ble.md
+      - 报错与处理: issues-and-fixes.md
+      - 项目状态: project-status.md
+  - WT32-ETH01 四色天气屏:
+      - 项目与硬件: weather/index.md
+      - 复刻日志: weather/porting-log.md
+      - 使用与天气 API: weather/usage-api.md
+      - 报错与项目状态: weather/issues-and-status.md
   - Ecoli 站点: site-structure.md
   - Git 常用操作: git-commands.md
 
