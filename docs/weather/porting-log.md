@@ -38,6 +38,15 @@ VS Code 显示 `build successful`，但 `esp_wifi.h`、`driver/gpio.h`、`math.h
 
 Wi-Fi 名称和密码从自己已有的 `ws2812-8x8-wifi-matrix` 工程中取用，放在本地忽略文件里，没有写进公开源码。
 
+WT32-ETH01 使用 USB 转 TTL 烧录，TX 接板卡 UART0 的 RXD，RX 接 UART0 的 TXD，GND 共地，逻辑电平为 3.3V。手动进入下载模式的步骤如下：
+
+1. 先断开板卡电源，把 **IO0 接到 GND**，使 IO0 保持低电平。
+2. 保持 IO0 与 GND 相连，再给板卡上电，进入下载模式。
+3. 在 VS Code 中执行烧录，或在 ESP-IDF 终端运行 `idf.py -p COMx flash`，将 `COMx` 换成 USB 转 TTL 的实际串口。
+4. 烧录完成后，**断开 IO0 与 GND 的连接**，再重新上电或按 EN 复位，进入天气程序。
+
+仅断开 IO0 与 GND 不会让已经处于下载模式的芯片自动运行程序，需要再复位一次；正常运行时不要继续将 IO0 接地。
+
 烧录后，串口能看到获得 IP、NTP 校时、证书校验通过和天气返回。这一阶段网络已经工作，但屏幕仍然空白。
 
 ```text
