@@ -22,7 +22,7 @@ USB MIDI 键盘、本地 piano 显示、音频输出，以及 AppleMIDI / BLE MI
 
 复刻 `esp32-e-paper-weatherdisplay`，主控换成 WT32-ETH01，天气接口改为 Open-Meteo，屏幕采用 4.2inch e-Paper Module (G)。从普通黑白 V2 驱动超时，到确认 G 型协议、显示四色诊断图，再改成中文天气界面。
 
-Wi-Fi、NTP 与天气请求已经有实机日志，G 型四色诊断图已显示成功。中文天气界面已编译并生成像素预览，实机效果待烧录确认。
+Wi-Fi 联网、NTP 校时、天气获取、中文四色显示和定时休眠均已在实物上跑通。
 
 - [项目与硬件](weather/index.md)
 - [复刻日志](weather/porting-log.md)
